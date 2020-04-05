@@ -1,0 +1,101 @@
+char Caracter;
+		char temp;
+		String tempPass;
+		int tamañoPassword;
+    	//String MA = "";
+    	//String cadena ="PASSWORD";
+    	int i;
+    	//int num = 7,n=4,cont=2;
+        //String cad="";
+        int num,n=4,cont=2;
+    	String cad="";
+    	//int tamañoPassword=0;
+    	
+    	//tempPass=Password;
+        tamañoPassword=Password.length();
+        
+    	num=tamañoPassword+2;
+    	int numPrimos[];
+    	numPrimos= new int[tamañoPassword]; 
+    	int pos=0;
+        
+        if(num>2){
+            cad="2 - 3";
+            while(cont<num){
+                i=2;
+                while(i<=n){
+                    if(i==n){
+                    	cad=cad+" - "+n;
+                    	cont=cont+1;
+                    	//System.out.println(n);
+                		numPrimos[pos]=n;
+                		pos++;
+                    }else{
+                    	if(n % i==0){
+                    	i=n;
+                    	}
+                    }
+                    i=i+1;
+                }
+                n=n+1;
+            }
+            //System.out.println(cad);
+        }else{
+            if(num>0){
+            if(num==1){
+                //System.out.println("es primo 2");
+            }else{
+            //System.out.println("es primo 2, 3");
+            }
+            }else{
+            //System.out.println("ingresa numeros positivos");
+            }
+        }
+        
+        
+        
+        
+    	Random rnd = new Random();
+    		for ( i = 0; i < 2048; i++)
+    		{
+    			if(i==numPrimos[i]){
+    				Caracter=Password.charAt(i);
+    			}else{
+        			int x= (int)(rnd.nextDouble() * 26 + 65);
+             		Caracter = (char)(x);
+             	}
+             	MA += Caracter;
+    		}
+    		
+    	
+    	//Eliminar al final
+    	BufferedWriter bw = null;
+		FileWriter fw = null;
+
+		try {
+			//String data = "Hola stackoverflow.com...";
+			File file = new File("hola.txt");
+			// Si el archivo no existe, se crea!
+			if (!file.exists()) {
+			    file.createNewFile();
+			}
+			// flag true, indica adjuntar información al archivo.
+			fw = new FileWriter(file.getAbsoluteFile(), true);
+			bw = new BufferedWriter(fw);
+			bw.write(MA);
+			bw.newLine();
+			//bw.write("\n");
+			//System.out.println("información agregada!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+			                //Cierra instancias de FileWriter y BufferedWriter
+			    if (bw != null)
+			        bw.close();
+			    if (fw != null)
+			        fw.close();
+			} catch (IOException ex) {
+			    ex.printStackTrace();
+			}
+		}

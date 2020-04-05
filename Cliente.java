@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Cliente{
 
-	//https://pelisplus.me/pelicula/violet-y-finch/p001/
 	
 	public static void main(String[] args){
 	
@@ -14,11 +13,13 @@ public class Cliente{
 		DataInputStream in;
 		DataOutputStream out;
 		
-		int respServer;
+		int respServer,opc;
 		
 		Scanner tl = new Scanner(System.in);
 		
-		String cad1,cad2,cad3,cadencriptadasimple;
+		String cad1,cad2,cad3,cad4,cad5,cad6,cadencriptadasimple;
+		String MAE;
+		
 		
 		try{
 			Socket sc = new Socket(HOST, PUERTO);
@@ -28,76 +29,103 @@ public class Cliente{
 			
 			//out.writeUTF("Hola mundo desde el cliente");
 			
-			System.out.println("Usuario:");
+			System.out.println("1.- Login");
+			System.out.println("2.- Registro");
+			opc = tl.nextInt();
+			tl.skip("\n");
 			
-			cad1 = tl.nextLine();
+			if(opc==1){
 			
-			//out.writeUTF(cad1);
+				out.writeUTF("1");
 			
-			encriptado encripta = new encriptado(cad1);
-			
-			//System.out.println("El usuario encriptado es: ");
-			
-			cadencriptadasimple = encripta.encriptadocad;
-			
-			//System.out.println(cadencriptadasimple);
-			
-			out.writeUTF(cadencriptadasimple);
-			
-			String mensaje1 = in.readUTF();
-			
-			//System.out.println(mensaje1);
-			
-			respServer = Integer.parseInt(mensaje1);
-			
-			//System.out.println(respServer);
-			
-			if(respServer==1){
-				//System.out.println("Usuario valido");
+				System.out.println("Usuario:");
 				
-				//String mensaje3 = in.readUTF();
+				cad1 = tl.nextLine();	//lee usuario
 				
-				//System.out.println(mensaje3);
+				encriptado encripta = new encriptado(cad1);	//manda a encriptar la cadena
+					
+				cadencriptadasimple = encripta.encriptadocad; //obtiene la cadena encriptada
+			
+				out.writeUTF(cadencriptadasimple);	//manda la cadena encriptada al servidor
 				
-				System.out.println("Contraseña: ");
-			
-				cad2 = tl.nextLine();
+				String mensaje1 = in.readUTF();	//obtiene respuesta del servidor en busqueda en la BD
+						
+				respServer = Integer.parseInt(mensaje1);	//vemos el resultado
 				
-				out.writeUTF(cad2);
+				if(respServer==1){
+					
+					MAE = in.readUTF();	//Obtiene el MAE del servidor
+					
+					desencriptado desencripta = new desencriptado(MAE); //desencripta MAE
+					
+					String MASer=desencripta.Dencriptadocad;
+										
+					System.out.println("Contraseña: ");
 				
-				String mensaje2 = in.readUTF();
+					cad2 = tl.nextLine();	//lee contraseña
+					
+					ExtraccionAleatorio extraccionAleatorio = new ExtraccionAleatorio(cad2,MASer);
+					
+					//out.writeUTF(cad2);
+					
+					//System.out.println(mensaje2);
+					
+					System.out.println("L O G I N  E X I T O S O");
+					
+					sc.close();
+					
+				}else if(respServer==0){
+					System.out.println("E R R O R");
+					System.out.println("Usuario no valido");
+					
+					sc.close();
+				}else{
+					sc.close();
+				}
+				
+			}else if(opc==2){
+				
+				out.writeUTF("2");
+				System.out.println("Regisgtro");
+				
+				System.out.println("Ingresa Usuario");
+				cad4 = tl.nextLine();
+				System.out.println("Ingresa Contraseña");
+				cad5 = tl.nextLine();
+				
+				encriptado encripta = new encriptado(cad4);
+				cadencriptadasimple = encripta.encriptadocad;
+				
+				out.writeUTF(cadencriptadasimple);
+				String mensaje1 = in.readUTF();	//obtiene respuesta del servidor en busqueda en la BD
+						
+				respServer = Integer.parseInt(mensaje1);	//vemos el resultado
+				
+				if(respServer==0){
+					cad6=cad4+","+cad5;
+					encriptado encripta2 = new encriptado(cad6);
+					cadencriptadasimple = encripta2.encriptadocad;
+					out.writeUTF(cadencriptadasimple);
+					
+					System.out.println("R E G I S T R O  E X I T O S O");
+					sc.close();
+				}else if(respServer==1){
+					System.out.println("E R R O R");
+					System.out.println("Usuario ya registrado");
+					sc.close();
+				
+				}else{
+					sc.close();
+				}
 				
 				
-				System.out.println(mensaje2);
-				
-				sc.close();
-				
-			}else if(respServer==0){
-				System.out.println("Usuario no valido");
-				
-				
-				//String mensaje2 = in.readUTF();
-				sc.close();
-			}
-			
-			
-			/*System.out.println("Contraseña: ");
-			
-			cad2 = tl.nextLine();
-			
-			//cad3 =cad+","+cad2;
-			
-			out.writeUTF(cad2);
-			
-			String mensaje2 = in.readUTF();
-			
-			
-			System.out.println(mensaje2);*/
-			
-			//sc.close();
+			}else{
+				out.writeUTF("3");
+				System.out.println("E R R O R");
+				System.out.println("OPCION INCORRECTA");
+			}//switch
 			
 		}catch (IOException e){
-			//Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
 			e.printStackTrace();
 		}
 	

@@ -20,7 +20,7 @@ class encriptado {
 		
 		encriptadocad = String.valueOf(array);
 		
-		//Introduccion a archivo
+		//Introduccion a archivo (borrar al final)
 		
 		try {
 			//String data = "Hola stackoverflow.com...";
