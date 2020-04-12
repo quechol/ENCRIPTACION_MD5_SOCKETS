@@ -20,36 +20,6 @@ class desencriptado {
 		
 		Dencriptadocad = String.valueOf(array);
 		
-		//Introduccion a archivo (borrar al terminar el proyecto)
-		
-		try {
-			//String data = "Hola stackoverflow.com...";
-			File file = new File("desencriptado.txt");
-			// Si el archivo no existe, se crea!
-			if (!file.exists()) {
-			    file.createNewFile();
-			}
-			// flag true, indica adjuntar información al archivo.
-			//fw = new FileWriter(file.getAbsoluteFile(), true);
-			fw = new FileWriter(file);
-			bw = new BufferedWriter(fw);
-			bw.write(Dencriptadocad);
-			//bw.newLine();
-			//bw.write("\n");
-			//System.out.println("información agregada!");
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-			                //Cierra instancias de FileWriter y BufferedWriter
-			    if (bw != null)
-			        bw.close();
-			    if (fw != null)
-			        fw.close();
-			} catch (IOException ex) {
-			    ex.printStackTrace();
-			}
-		}
 	}
 	
 	

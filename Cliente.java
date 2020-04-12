@@ -13,12 +13,14 @@ public class Cliente{
 		DataInputStream in;
 		DataOutputStream out;
 		
-		int respServer,opc;
+		int respServer,opc,respServerHuella;
 		
 		Scanner tl = new Scanner(System.in);
 		
 		String cad1,cad2,cad3,cad4,cad5,cad6,cadencriptadasimple;
-		String MAE;
+		String MAE,MAMD5="";
+		String huellaCliente ="";
+		String opcS="";
 		
 		
 		try{
@@ -31,8 +33,13 @@ public class Cliente{
 			
 			System.out.println("1.- Login");
 			System.out.println("2.- Registro");
-			opc = tl.nextInt();
-			tl.skip("\n");
+			opcS=tl.nextLine();
+			//numEntero = Integer. parseInt(numCadena);
+			opc = Integer.parseInt(opcS);
+			//tl.skip("\n");
+			/*char c=opcS.charAt(0);
+			int ascii = (int) c;
+			opc=ascii-*/
 			
 			if(opc==1){
 			
@@ -66,17 +73,46 @@ public class Cliente{
 					
 					ExtraccionAleatorio extraccionAleatorio = new ExtraccionAleatorio(cad2,MASer);
 					
-					//out.writeUTF(cad2);
+					//System.out.println(extraccionAleatorio.nuevoMA);
 					
-					//System.out.println(mensaje2);
+					//llamar a funcion md5
 					
-					System.out.println("L O G I N  E X I T O S O");
+					MAMD5=extraccionAleatorio.nuevoMA;
+					
+					controladorMD5 controladorMD5 = new controladorMD5(MAMD5);
+					
+					huellaCliente=controladorMD5.strF;
+					
+					//enviar md5
+					
+					out.writeUTF(huellaCliente);
+					
+					//recibir respuesta del servidor con el md5
+					
+					String mensajeHuella = in.readUTF();	//obtiene respuesta del servidor en busqueda en la BD
+						
+					respServerHuella = Integer.parseInt(mensajeHuella);	//vemos el resultado
+					
+					if(respServerHuella==1){
+					
+						System.out.println("L O G I N  E X I T O S O");
+					
+					}else{
+						
+						System.out.println("E R R O R");
+						System.out.println("Usuario o Contraseña no validos");
+						
+					}
 					
 					sc.close();
 					
 				}else if(respServer==0){
+				
+					System.out.println("Contraseña: ");
+					cad2 = tl.nextLine();
+					
 					System.out.println("E R R O R");
-					System.out.println("Usuario no valido");
+					System.out.println("Usuario o Contraseña no validos");
 					
 					sc.close();
 				}else{
@@ -86,7 +122,7 @@ public class Cliente{
 			}else if(opc==2){
 				
 				out.writeUTF("2");
-				System.out.println("Regisgtro");
+				System.out.println("Registro");
 				
 				System.out.println("Ingresa Usuario");
 				cad4 = tl.nextLine();

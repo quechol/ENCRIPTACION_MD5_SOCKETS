@@ -5,3 +5,6 @@ usr4,password4
 usr5,pass5
 usr56,pass56
 usr57,pass57
+usr66,pass66
+usrtoday,passtoday
+ussr2,pass2
